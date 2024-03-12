@@ -6,11 +6,26 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:34:31 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/09 23:09:03 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/12 23:44:13 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
+#include "../inc/philo.h"
+
+long long	time_now(void)
+{
+	struct timeval	time;
+	long long		milliseconds;
+
+	gettimeofday(&time, NULL);
+	milliseconds = time.tv_sec * 1000LL + time.tv_usec / 1000LL;
+	return (milliseconds);
+}
+
+long long	time_since_start(t_info *info)
+{
+	return (time_now() - info->start_time);
+}
 
 bool	non_digit_in(char const **argv)
 {
@@ -37,17 +52,17 @@ bool	non_digit_in(char const **argv)
  * forks  0 1 2
  * fork2 philo0 fork0 philo1 fork1 philo2
  */
-int	right_hand_fork(t_individual *this)
+int	right_hand_fork(t_philo *this)
 {
 	return (this->philo_idx);
 }
 
-int	left_hand_fork(t_individual *this)
+int	left_hand_fork_idx(t_info *info, int philo_idx)
 {
-	if (this->philo_idx != 0)
-		return (this->philo_idx - 1);
+	if (philo_idx != 0)
+		return (philo_idx - 1);
 	else
-		return (this->info->philos_count - 1);
+		return (info->philo_count - 1);
 }
 
 
@@ -67,48 +82,97 @@ int	left_hand_fork(t_individual *this)
  */
 void *routine(void *args)
 {
-	t_individual	*this;
-	struct timeval	time;
+	t_philo	*this;
 
-	this = (t_individual *)args;
+	this = (t_philo *)args;
 	// printf("This is number %d, id: %ld\n", this->philo_idx, pthread_self());
 	while (true)
 	{
+
 		// Eat
-		/* gettimeofday(&time, NULL);
-		printf("%ld %d is waiting for fork (%d)\n", time.tv_sec, this->philo_idx, right_hand_fork(this)); */
-		pthread_mutex_lock(&(this->info->forks[right_hand_fork(this)]));
-		gettimeofday(&time, NULL);
-		printf("%ld %d has taken fork (%d) 🍴\n", time.tv_sec, this->philo_idx, right_hand_fork(this));
 
-		/* gettimeofday(&time, NULL);
-		printf("%ld %d is waiting for fork (%d)\n", time.tv_sec, this->philo_idx, left_hand_fork(this)); */
-		pthread_mutex_lock(&(this->info->forks[left_hand_fork(this)]));
-		gettimeofday(&time, NULL);
-		printf("%ld %d has taken fork (%d) 🍴\n", time.tv_sec, this->philo_idx, left_hand_fork(this));
+		// Right then left forks
+		if (this->philo_idx % 2 == 0)
+		{
+			pthread_mutex_lock(this->right_fork);
+			printf("%lld %d has taken fork %d\t🍴\n",
+				time_since_start(this->shared_info),
+				this->philo_idx + 1,
+				this->philo_idx + 1);
 
-		gettimeofday(&time, NULL);
-		printf("%ld %d is eating 🍝\n", time.tv_sec, this->philo_idx);
-		usleep(this->info->time_to_eat);
+			pthread_mutex_lock(this->left_fork);
+			printf("%lld %d has taken fork %d\t🍴\n",
+				time_since_start(this->shared_info),
+				this->philo_idx + 1,
+				left_hand_fork_idx(this->shared_info, this->philo_idx) + 1);
+		}
+		else // Left then right forks 
+		{
+			pthread_mutex_lock(this->left_fork);
+			printf("%lld %d has taken fork %d\t🍴\n",
+				time_since_start(this->shared_info),
+				this->philo_idx + 1,
+				left_hand_fork_idx(this->shared_info, this->philo_idx) + 1);
 
-/* 		if (pthread_mutex_unlock(&(this->info->forks[right_hand_fork(this)])) == 0)
-			printf("%ld %d has put down fork (%d)\n", time.tv_sec, this->philo_idx, right_hand_fork(this));
-		if (pthread_mutex_unlock(&(this->info->forks[left_hand_fork(this)])) == 0)
-			printf("%ld %d has put down fork (%d)\n", time.tv_sec, this->philo_idx, left_hand_fork(this));
- */
-		pthread_mutex_unlock(&(this->info->forks[right_hand_fork(this)]));
-		pthread_mutex_unlock(&(this->info->forks[left_hand_fork(this)]));
+			pthread_mutex_lock(this->right_fork);
+			printf("%lld %d has taken fork %d\t🍴\n",
+				time_since_start(this->shared_info),
+				this->philo_idx + 1,
+				this->philo_idx + 1);
+		}
+
+		this->last_eat = time_since_start(this->shared_info);
+		this->is_not_eating = false;
+		printf("%lld %d is eating\t🍝\n",
+			time_since_start(this->shared_info),
+			this->philo_idx + 1);
+		usleep(this->shared_info->time_to_eat * 1000);
+
+		pthread_mutex_unlock(this->right_fork);
+		pthread_mutex_unlock(this->left_fork);
+
+		this->is_not_eating = true;
+		this->eat_count++;
+
+		printf("%lld %d has eaten %d times\n",
+			time_since_start(this->shared_info),
+			this->philo_idx + 1,
+			this->eat_count);
+		if (this->shared_info->eat_max_count > 0
+			&& this->eat_count == this->shared_info->eat_max_count)
+		{
+			printf("%lld %d stops\n",
+				time_since_start(this->shared_info),
+				this->philo_idx + 1);
+			break;
+		}
+
 		// Sleep
-		printf("%ld %d is sleeping 😴\n", time.tv_sec, this->philo_idx);
-		usleep(this->info->time_to_sleep);
-		
-		// Think
-		gettimeofday(&time, NULL);
-		printf("%ld %d is thinking 🤔\n", time.tv_sec, this->philo_idx);
-		usleep((this->info->time_to_die) / 2);
 
+		printf("%lld %d is sleeping\t😴\n", 
+			time_now() - this->shared_info->start_time,
+			this->philo_idx + 1);
+		usleep(this->shared_info->time_to_sleep * 1000);
+
+		// Think
+
+		printf("%lld %d is thinking\t🤔\n",
+			time_now() - this->shared_info->start_time,
+			this->philo_idx + 1);
+		usleep(1000); // 1ms
 	}
+	this->shared_info->full_philo_count++;
+	/* printf("Increment full_philo_count to %d\n",
+		this->shared_info->full_philo_count); */
 	pthread_exit(NULL);
+}
+
+void	free_and_exit(t_philo *philos, t_info *info, pthread_t *threads)
+{
+	free(philos);
+	free(info->forks);
+	free(threads);
+	exit (0);
 }
 
 /**
@@ -127,11 +191,11 @@ int main(int argc, char const **argv)
 	t_info	info;
 
 	if ((argc != 5 && argc != 6) || non_digit_in(argv))
-		return (0);
+		return (1);
 
 	// Parse the input =========================================================
 
-	info.philos_count = ft_atoi(argv[1]);
+	info.philo_count = ft_atoi(argv[1]);
 	info.time_to_die = ft_atoi(argv[2]);
 	info.time_to_eat = ft_atoi(argv[3]);
 	info.time_to_sleep = ft_atoi(argv[4]);
@@ -140,21 +204,21 @@ int main(int argc, char const **argv)
 	else
 		info.eat_max_count = -1;
 
-	printf("philos_count:%d\n", info.philos_count);
+	printf("philo_count:%d\n", info.philo_count);
 	printf("time_to_die:%d\n", info.time_to_die);
 	printf("time_to_eat:%d\n", info.time_to_eat);
 	printf("time_to_sleep:%d\n", info.time_to_sleep);
-	printf("eat_max_count:%d\n", info.eat_max_count);
+	printf("eat_max_count:%d\n\n", info.eat_max_count);
 
 	// Create mutexes ==========================================================
 
 	int	i;
 
-	info.forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * info.philos_count);
+	info.forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * info.philo_count);
 	if (!info.forks)
 		return (1);
 	i = 0;
-	while (i < info.philos_count)
+	while (i < info.philo_count)
 	{
 		pthread_mutex_init(&info.forks[i], NULL);
 		i++;
@@ -162,46 +226,71 @@ int main(int argc, char const **argv)
 
 	// Create threads ==========================================================
 
-	pthread_t		*philos;
-	t_individual	*individuals;
+	pthread_t		*threads;
+	t_philo	*philos;
 
-	philos = (pthread_t *)malloc(sizeof(pthread_t) * info.philos_count);
-	individuals = (t_individual *)malloc(sizeof(t_individual) * info.philos_count);
+	info.full_philo_count = 0;
+	threads = (pthread_t *)malloc(sizeof(pthread_t) * info.philo_count);
+	philos = (t_philo *)malloc(sizeof(t_philo) * info.philo_count);
+	info.start_time = time_now();
 	i = 0;
-	while (i < info.philos_count)
+	while (i < info.philo_count)
 	{
-		individuals[i].info = &info;
-		individuals[i].philo_idx = i;
-		individuals[i].last_eat = 0;
-		pthread_create(&philos[i], NULL, routine, &individuals[i]);
+		philos[i].shared_info = &info;
+		philos[i].philo_idx = i;
+		philos[i].last_eat = 0;
+		philos[i].eat_count = 0;
+		philos[i].left_fork = &info.forks[left_hand_fork_idx(&info, i)];
+		philos[i].right_fork = &info.forks[i];
+		philos[i].is_not_eating = true;
+		pthread_create(&threads[i], NULL, routine, &philos[i]);
 		i++;
 	}
 
 	// Monitor philosophers ====================================================
 
-	// struct timeval	time;
-
-	// while (true)
-	// {
-	// 	i = 0;
-	// 	while (i < info.philos_count)
-	// 	{
-	// 		gettimeofday(&time, NULL);
-	// 		if (individuals[i].last_eat > info.time_to_die)
-	// 			printf("%ld %d died\n", )
-	// 	}
-	// }
-
-	i = 0;
-	while (i < info.philos_count)
+	while (info.full_philo_count != info.philo_count)
 	{
-		pthread_join(philos[i], NULL);
-		i++;
+		/* printf("full_philo_count: %d, philo_count: %d\n",
+			info.full_philo_count,
+			info.philo_count); */
+		i = 0;
+		while (i < info.philo_count)
+		{
+			/* printf("%lld %d since last eat: %lld\n",
+				time_since_start(&info),
+				i,
+				time_since_start(&info) - philos[i].last_eat); */
+			if (philos[i].eat_count == info.eat_max_count)
+			{
+				i++;
+				continue ;
+			}
+			if ((time_since_start(&info) - philos[i].last_eat > info.time_to_die
+				&& philos[i].is_not_eating))
+			{
+				printf("%lld %d died after starving for %lld\t😵\n",
+					time_since_start(&info),
+					i + 1,
+					time_since_start(&info) - philos[i].last_eat);
+				free_and_exit(philos, &info, threads);
+			}
+			i++;
+		}
+		usleep(1e3); // 0.5 millisecond
 	}
+	// printf("Main stops monitoring.\n");
+	/* i = 0;
+	while (i < info.philo_count)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	} */
 
-	free(individuals);
-	free(info.forks);
 	free(philos);
+	free(info.forks);
+	free(threads);
+	return (0);
 }
 
 

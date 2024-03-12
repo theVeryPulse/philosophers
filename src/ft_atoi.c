@@ -6,11 +6,12 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:42:04 by juli              #+#    #+#             */
-/*   Updated: 2024/03/09 19:49:21 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/10 19:49:29 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philosophers.h"
+#include "../inc/philo.h"
+#include <limits.h>
 
 #define POSITIVE (+1)
 #define NEGATIVE (-1)
