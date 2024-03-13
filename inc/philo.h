@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:35:43 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/12 22:17:32 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/13 23:42:50 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,32 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	bool			is_not_eating;
+	pthread_t		thread;
 }	t_philo;
 
 int	ft_atoi(const char *nptr);
 int	ft_isdigit(int c);
 int	ft_isspace(int c);
+
+void	check_input(int argc, char const **argv);
+bool	non_digit_in(char const **argv);
+
+/* Parse input */
+
+void	parse_input(t_info *info, int argc, char const **argv);
+
+/* Forks and philosophers */
+
+void	create_forks(t_info *info);
+void	create_philos(t_info *info, t_philo **philos);
+int		left_hand_fork_idx(t_info *info, int philo_idx);
+void	*routine(void *args);
+void	monitor_philos(t_info *info, t_philo *philos);
+
+
+/* Time */
+
+long long	time_since_epoch(void);
+long long	time_since_start(t_info *info);
+
+void	free_and_exit(t_info *info, t_philo *philos);
