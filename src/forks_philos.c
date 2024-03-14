@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 23:00:13 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/13 23:46:45 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/14 22:56:18 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	create_philos(t_info *info, t_philo **philos)
 	info->full_philo_count = 0;
 	*philos = (t_philo *)malloc(sizeof(t_philo) * info->philo_count);
 	info->start_time = time_since_epoch();
+	info->no_philo_died = true;
 	i = 0;
 	while (i < info->philo_count)
 	{
@@ -44,6 +45,8 @@ void	create_philos(t_info *info, t_philo **philos)
 		(*philos)[i].left_fork = &(info->forks[left_hand_fork_idx(info, i)]);
 		(*philos)[i].right_fork = &(info->forks[i]);
 		(*philos)[i].is_not_eating = true;
+		(*philos)[i].is_dead = false;
+		(*philos)[i].idx_is_even_number = (i % 2 == 0);
 		pthread_create(&(*philos)[i].thread, NULL, routine, &(*philos)[i]);
 		i++;
 	}
@@ -57,14 +60,23 @@ int	left_hand_fork_idx(t_info *info, int philo_idx)
 		return (info->philo_count - 1);
 }
 
+void	death_message(t_info *info, t_philo *philos, int i)
+{
+	printf("%lld %d died after starving for %lld\t😵\n",
+		time_since_start(info),
+		i + 1,
+		time_since_start(info) - philos[i].last_eat);
+}
+
 void	monitor_philos(t_info *info, t_philo *philos)
 {
 	int	i;
 
-	while (info->full_philo_count != info->philo_count)
+	while (info->full_philo_count != info->philo_count
+		&& info->no_philo_died)
 	{
 		i = 0;
-		while (i < info->philo_count)
+		while (i < info->philo_count && info->no_philo_died)
 		{
 			if (philos[i].eat_count == info->eat_max_count)
 			{
@@ -74,14 +86,17 @@ void	monitor_philos(t_info *info, t_philo *philos)
 			if ((time_since_start(info) - philos[i].last_eat > info->time_to_die
 					&& philos[i].is_not_eating))
 			{
+				info->no_philo_died = false;
+				philos[i].is_dead = true;
 				printf("%lld %d died after starving for %lld\t😵\n",
 					time_since_start(info),
 					i + 1,
 					time_since_start(info) - philos[i].last_eat);
-				free_and_exit(info, philos);
+				// death_message(info, philos, i);
+				break ;
 			}
 			i++;
 		}
-		usleep(1e3);
+		usleep(1e2);
 	}
 }

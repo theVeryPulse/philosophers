@@ -1,6 +1,6 @@
 NAME := philo
 CC := cc
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -g
 FILES := main.c\
 	check_input.c \
 	forks_philos.c \
@@ -25,7 +25,7 @@ $(NAME) : $(OBJ_FILES)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) -c $^ -o $@
+	$(CC) -c $^ -o $@ $(CFLAGS)
 
 clean :
 	rm -rf $(OBJ_DIR)

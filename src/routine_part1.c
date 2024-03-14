@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 02:09:16 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/14 23:00:10 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*routine(void *args)
 	t_philo	*this;
 
 	this = (t_philo *)args;
-	while (true)
+	while (this->shared_info->no_philo_died)
 	{
 		philo_takes_forks(this);
 		philo_eats(this);
@@ -40,19 +40,25 @@ void	*routine(void *args)
 		philo_sleeps(this);
 		philo_thinks(this);
 	}
-	this->shared_info->full_philo_count++;
+	if (this->shared_info->no_philo_died
+		&& this->is_dead == false)
+		this->shared_info->full_philo_count++;
 	pthread_exit(NULL);
 }
 
 void	philo_takes_forks(t_philo *philo)
 {
-	if (philo->philo_idx % 2 == 0)
+	if (philo->shared_info->no_philo_died != true)
+		return ;
+	if (philo->idx_is_even_number)
 	{
 		take_right_fork(philo);
 		take_left_fork(philo);
 	}
 	else
 	{
+		if (philo->shared_info->philo_count_is_odd)
+			usleep(1);
 		take_left_fork(philo);
 		take_right_fork(philo);
 	}
@@ -78,6 +84,8 @@ void	take_left_fork(t_philo *philo)
 
 void	philo_eats(t_philo *philo)
 {
+	if (philo->shared_info->no_philo_died != true)
+		return ;
 	philo->last_eat = time_since_start(philo->shared_info);
 	philo->is_not_eating = false;
 	printf("%lld %d is eating\t🍝\n",
