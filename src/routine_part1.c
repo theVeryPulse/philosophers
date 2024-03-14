@@ -1,0 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine_part1.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
+/*   Updated: 2024/03/14 02:09:16 by Philip           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../inc/philo.h"
+
+/**
+ * @brief 
+ * 
+ * @param 
+ * @return 
+ * @note
+ * eat -> sleep -> think -> eat -> ... 
+ * 
+ * timestamp_in_ms X has taken a fork
+ * timestamp_in_ms X is eating
+ * timestamp_in_ms X is sleeping
+ * timestamp_in_ms X is thinking
+ * timestamp_in_ms X died 😵
+ */
+void	*routine(void *args)
+{
+	t_philo	*this;
+
+	this = (t_philo *)args;
+	while (true)
+	{
+		philo_takes_forks(this);
+		philo_eats(this);
+		if (philo_eats_enough(this))
+			break ;
+		philo_sleeps(this);
+		philo_thinks(this);
+	}
+	this->shared_info->full_philo_count++;
+	pthread_exit(NULL);
+}
+
+void	philo_takes_forks(t_philo *philo)
+{
+	if (philo->philo_idx % 2 == 0)
+	{
+		take_right_fork(philo);
+		take_left_fork(philo);
+	}
+	else
+	{
+		take_left_fork(philo);
+		take_right_fork(philo);
+	}
+}
+
+void	take_right_fork(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	printf("%lld %d has taken fork %d\t🍴\n",
+		time_since_start(philo->shared_info),
+		philo->philo_idx + 1,
+		philo->philo_idx + 1);
+}
+
+void	take_left_fork(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	printf("%lld %d has taken fork %d\t🍴\n",
+		time_since_start(philo->shared_info),
+		philo->philo_idx + 1,
+		left_hand_fork_idx(philo->shared_info, philo->philo_idx) + 1);
+}
+
+void	philo_eats(t_philo *philo)
+{
+	philo->last_eat = time_since_start(philo->shared_info);
+	philo->is_not_eating = false;
+	printf("%lld %d is eating\t🍝\n",
+		time_since_start(philo->shared_info),
+		philo->philo_idx + 1);
+	usleep(philo->shared_info->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	philo->is_not_eating = true;
+	philo->eat_count++;
+	printf("%lld %d has eaten %d times\n",
+		time_since_start(philo->shared_info),
+		philo->philo_idx + 1,
+		philo->eat_count);
+}
