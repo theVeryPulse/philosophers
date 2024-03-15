@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 22:47:45 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:14:27 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ void	parse_input(t_info *info, int argc, char const **argv)
 		info->eat_max_count = ft_atoi(argv[5]);
 	else
 		info->eat_max_count = -1;
+	if (info->philo_count == 0 || info->time_to_die == 0
+		|| info->time_to_eat == 0 || info->time_to_sleep == 0
+		|| info->eat_max_count == 0)
+		exit (1);
 	if (info->philo_count % 2 == 0)
 		info->philo_count_is_odd = false;
 	else

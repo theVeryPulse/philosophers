@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:35:43 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 23:04:23 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:41:42 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ typedef struct s_info
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				eat_max_count;
-	long long		start_time;
 	int				full_philo_count;
-	bool			no_philo_died:1;
-	bool			philo_count_is_odd:1;
+	long long		start_time;
+	bool			no_philo_died;
+	bool			philo_count_is_odd;
 }	t_info;
 
 typedef struct s_philo
@@ -41,9 +41,9 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
-	bool			is_not_eating:1;
-	bool			is_dead:1;
-	bool			idx_is_even_number:1;
+	bool			is_not_eating;
+	bool			is_dead;
+	bool			idx_is_even_number;
 }	t_philo;
 
 /* Parse input */

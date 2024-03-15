@@ -6,11 +6,13 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 23:00:13 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 22:56:18 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:35:31 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+static void	philo_death_notif(t_info *info, t_philo *philos, int philo_idx);
 
 void	create_forks(t_info *info)
 {
@@ -60,14 +62,6 @@ int	left_hand_fork_idx(t_info *info, int philo_idx)
 		return (info->philo_count - 1);
 }
 
-void	death_message(t_info *info, t_philo *philos, int i)
-{
-	printf("%lld %d died after starving for %lld\t😵\n",
-		time_since_start(info),
-		i + 1,
-		time_since_start(info) - philos[i].last_eat);
-}
-
 void	monitor_philos(t_info *info, t_philo *philos)
 {
 	int	i;
@@ -86,17 +80,21 @@ void	monitor_philos(t_info *info, t_philo *philos)
 			if ((time_since_start(info) - philos[i].last_eat > info->time_to_die
 					&& philos[i].is_not_eating))
 			{
-				info->no_philo_died = false;
-				philos[i].is_dead = true;
-				printf("%lld %d died after starving for %lld\t😵\n",
-					time_since_start(info),
-					i + 1,
-					time_since_start(info) - philos[i].last_eat);
-				// death_message(info, philos, i);
+				philo_death_notif(info, philos, i);
 				break ;
 			}
 			i++;
 		}
 		usleep(1e2);
 	}
+}
+
+static void	philo_death_notif(t_info *info, t_philo *philos, int philo_idx)
+{
+	info->no_philo_died = false;
+	philos[philo_idx].is_dead = true;
+	printf("%lld %d died after starving for %lld\t😵\n",
+		time_since_start(info),
+		philo_idx + 1,
+		time_since_start(info) - philos[philo_idx].last_eat);
 }

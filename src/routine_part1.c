@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 23:00:10 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/15 01:01:08 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	philo_takes_forks(t_philo *philo)
 void	take_right_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
+	if (philo->shared_info->no_philo_died != true)
+		return ;
 	printf("%lld %d has taken fork %d\t🍴\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,
@@ -76,6 +78,8 @@ void	take_right_fork(t_philo *philo)
 void	take_left_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
+	if (philo->shared_info->no_philo_died != true)
+		return ;
 	printf("%lld %d has taken fork %d\t🍴\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,
@@ -96,6 +100,8 @@ void	philo_eats(t_philo *philo)
 	pthread_mutex_unlock(philo->left_fork);
 	philo->is_not_eating = true;
 	philo->eat_count++;
+	if (philo->shared_info->no_philo_died != true)
+		return ;
 	printf("%lld %d has eaten %d times\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,

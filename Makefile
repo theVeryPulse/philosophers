@@ -1,6 +1,6 @@
 NAME := philo
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -g
+CFLAGS := -Wall -Wextra -Werror -lpthread
 FILES := main.c\
 	check_input.c \
 	forks_philos.c \
@@ -36,5 +36,3 @@ fclean : clean
 re : fclean all
 
 .PHONY: all, clean, fclean, re
-
-
