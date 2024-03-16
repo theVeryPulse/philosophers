@@ -6,11 +6,14 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/15 01:14:27 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/16 16:49:29 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	check_input(int argc, char const **argv)
 {

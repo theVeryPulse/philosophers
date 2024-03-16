@@ -6,11 +6,13 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/15 01:01:08 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/16 23:12:48 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdio.h>
+#include <unistd.h>
 
 /**
  * @brief 
@@ -42,7 +44,7 @@ void	*routine(void *args)
 	}
 	if (this->shared_info->no_philo_died
 		&& this->is_dead == false)
-		this->shared_info->full_philo_count++;
+		safe_full_philo_count(this->shared_info, INCREMENT);
 	pthread_exit(NULL);
 }
 
@@ -69,10 +71,12 @@ void	take_right_fork(t_philo *philo)
 	pthread_mutex_lock(philo->right_fork);
 	if (philo->shared_info->no_philo_died != true)
 		return ;
+	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d has taken fork %d\t🍴\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,
 		philo->philo_idx + 1);
+	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 }
 
 void	take_left_fork(t_philo *philo)
@@ -80,30 +84,36 @@ void	take_left_fork(t_philo *philo)
 	pthread_mutex_lock(philo->left_fork);
 	if (philo->shared_info->no_philo_died != true)
 		return ;
+	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d has taken fork %d\t🍴\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,
 		left_hand_fork_idx(philo->shared_info, philo->philo_idx) + 1);
+	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 }
 
 void	philo_eats(t_philo *philo)
 {
 	if (philo->shared_info->no_philo_died != true)
 		return ;
-	philo->last_eat = time_since_start(philo->shared_info);
-	philo->is_not_eating = false;
+	safe_last_eat(philo, UPDATE);
+	safe_is_not_eating(philo, TOGGLE_FALSE);
+	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d is eating\t🍝\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1);
+	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 	usleep(philo->shared_info->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
-	philo->is_not_eating = true;
-	philo->eat_count++;
-	if (philo->shared_info->no_philo_died != true)
+	safe_is_not_eating(philo, TOGGLE_TRUE);
+	safe_eat_count(philo, INCREMENT);
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
+	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d has eaten %d times\n",
 		time_since_start(philo->shared_info),
 		philo->philo_idx + 1,
 		philo->eat_count);
+	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 }

@@ -6,11 +6,12 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:08:14 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/14 02:08:27 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/16 23:09:51 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdlib.h>
 
 void	free_and_exit(t_info *info, t_philo *philos)
 {

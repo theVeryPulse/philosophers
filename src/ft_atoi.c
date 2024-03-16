@@ -6,18 +6,18 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:42:04 by juli              #+#    #+#             */
-/*   Updated: 2024/03/13 23:46:08 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/16 21:06:02 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
-#include <limits.h>
 
 #define POSITIVE (+1)
 #define NEGATIVE (-1)
 #define BASE_TEN (10)
 
 static int	num(char c);
+static int	ft_isspace(int c);
 
 int	ft_atoi(const char *nptr)
 {
@@ -53,4 +53,18 @@ static int	num(char c)
 		return (c - '0');
 	else
 		return (c);
+}
+
+/**
+ * @brief Checks if the 'c' is a white-space character.
+ * 
+ * White-space characters are: ' ', '\\t', '\\n', '\\v', '\\f', and '\\r'.
+ * 
+ * @param c Character to check.
+ * @return int 
+ * Non-zero if the character is a white-space character, and zero otherwise.
+ */
+static int	ft_isspace(int c)
+{
+	return ((c >= '\t' && c <= '\r') || c == ' ');
 }

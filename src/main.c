@@ -6,11 +6,13 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:34:31 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/15 01:36:59 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/16 20:57:39 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+#include <stdio.h>
+#include <unistd.h>
 
 static void	one_philo_situation(t_info *info);
 static void	join_threads(t_info *info, t_philo *philos);
@@ -40,6 +42,7 @@ int	main(int argc, char const **argv)
 	}
 	create_forks(&info);
 	philos = NULL;
+	pthread_mutex_init(&info.printf_mutex, NULL);
 	create_philos(&info, &philos);
 	monitor_philos(&info, philos);
 	join_threads(&info, philos);
@@ -50,7 +53,7 @@ int	main(int argc, char const **argv)
 static void	one_philo_situation(t_info *info)
 {
 	printf("0 1 has taken fork 1\t🍴\n");
-	usleep(info->time_to_die);
+	usleep(info->time_to_die * 1000);
 	printf("%d 1 died after starving for %d\t😵\n",
 		info->time_to_die, info->time_to_die);
 }

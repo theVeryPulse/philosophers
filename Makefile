@@ -7,9 +7,9 @@ FILES := main.c\
 	free_and_exit.c \
 	ft_atoi.c \
 	ft_isdigit.c \
-	ft_isspace.c \
 	routine_part1.c \
 	routine_part2.c \
+	safe_operations.c \
 	time.c
 INC_DIR := inc
 SRC_DIR := src
