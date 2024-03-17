@@ -6,11 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 22:14:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/16 23:12:31 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:34:40 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "philo.h"
 
 int	safe_eat_count(t_philo *philo, t_mode mode)
 {

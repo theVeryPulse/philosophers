@@ -6,11 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:42:04 by juli              #+#    #+#             */
-/*   Updated: 2024/03/16 21:06:02 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:34:16 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "philo.h"
 
 #define POSITIVE (+1)
 #define NEGATIVE (-1)

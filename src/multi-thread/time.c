@@ -6,11 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:40:13 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/16 18:56:32 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:34:43 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "philo.h"
 #include <sys/time.h>
 #include <unistd.h>
 

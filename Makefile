@@ -12,7 +12,7 @@ FILES := main.c\
 	safe_operations.c \
 	time.c
 INC_DIR := inc
-SRC_DIR := src
+SRC_DIR := src/multi-thread
 OBJ_DIR := build
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(FILES))
@@ -21,11 +21,11 @@ OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 all : $(NAME)
 
 $(NAME) : $(OBJ_FILES)
-	$(CC) $(OBJ_FILES) -o $@ 
+	$(CC) $(OBJ_FILES) -o $@ $(CFLAGS) -I$(INC_DIR)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
-	$(CC) -c $^ -o $@ $(CFLAGS)
+	$(CC) -c $^ -o $@ $(CFLAGS) -I$(INC_DIR)
 
 clean :
 	rm -rf $(OBJ_DIR)

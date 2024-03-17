@@ -6,11 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:07:15 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 16:12:12 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 17:34:11 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/philo.h"
+#include "philo.h"
 #include <stdlib.h>
 
 void	create_forks(t_info *info)
