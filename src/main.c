@@ -6,16 +6,18 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:34:31 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/16 20:57:39 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 16:11:21 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 static void	one_philo_situation(t_info *info);
 static void	join_threads(t_info *info, t_philo *philos);
+static void	free_and_exit(t_info *info, t_philo *philos);
 
 /**
  * @brief 
@@ -68,4 +70,11 @@ static void	join_threads(t_info *info, t_philo *philos)
 		pthread_join(philos[i].thread, NULL);
 		i++;
 	}
+}
+
+static void	free_and_exit(t_info *info, t_philo *philos)
+{
+	free(philos);
+	free(info->forks);
+	exit (0);
 }

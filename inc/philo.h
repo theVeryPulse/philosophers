@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:35:43 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/16 23:09:10 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 16:10:39 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,3 @@ void		philo_thinks(t_philo *philo);
 
 long long	time_since_epoch(void);
 long long	time_since_start(t_info *info);
-
-/* Miscellaneous */
-
-void		free_and_exit(t_info *info, t_philo *philos);
