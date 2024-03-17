@@ -2,11 +2,11 @@ NAME := philo
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -lpthread
 FILES := main.c\
-	check_input.c \
-	forks_philos.c \
-	free_and_exit.c \
+	forks.c \
 	ft_atoi.c \
 	ft_isdigit.c \
+	input.c \
+	philos.c \
 	routine_part1.c \
 	routine_part2.c \
 	safe_operations.c \
