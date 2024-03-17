@@ -1,0 +1,1 @@
+`./philo 3 310 200 100` Program not exiting.

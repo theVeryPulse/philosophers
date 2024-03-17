@@ -12,7 +12,7 @@ FILES := main.c\
 	safe_operations.c \
 	time.c
 INC_DIR := inc
-SRC_DIR := src/multi-thread
+SRC_DIR := src
 OBJ_DIR := build
 
 SRC_FILES := $(addprefix $(SRC_DIR)/, $(FILES))
