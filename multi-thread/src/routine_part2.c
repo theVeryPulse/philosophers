@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:06:38 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 17:34:36 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 23:49:56 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 bool	philo_eats_enough(t_philo *philo)
 {
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return (false);
 	if (philo->shared_info->eat_max_count > 0
 		&& philo->eat_count == philo->shared_info->eat_max_count
@@ -37,7 +37,7 @@ bool	philo_eats_enough(t_philo *philo)
 
 void	philo_sleeps(t_philo *philo)
 {
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
 	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d is sleeping\t😴\n",
@@ -49,7 +49,7 @@ void	philo_sleeps(t_philo *philo)
 
 void	philo_thinks(t_philo *philo)
 {
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
 	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d is thinking\t🤔\n",
@@ -57,4 +57,10 @@ void	philo_thinks(t_philo *philo)
 		philo->philo_idx + 1);
 	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 	usleep(1000);
+}
+
+void	put_down_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 }

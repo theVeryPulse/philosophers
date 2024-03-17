@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:35:43 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 16:10:39 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 23:50:26 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void		*routine(void *args);
 void		philo_takes_forks(t_philo *philo);
 void		take_right_fork(t_philo *philo);
 void		take_left_fork(t_philo *philo);
+void		put_down_forks(t_philo *philo);
 void		philo_eats(t_philo *philo);
 bool		philo_eats_enough(t_philo *philo);
 void		philo_sleeps(t_philo *philo);

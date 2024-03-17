@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 17:34:32 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/17 23:50:59 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*routine(void *args)
 
 void	philo_takes_forks(t_philo *philo)
 {
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
 	if (philo->idx_is_even_number)
 	{
@@ -69,7 +69,7 @@ void	philo_takes_forks(t_philo *philo)
 void	take_right_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
 	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d has taken fork %d\t🍴\n",
@@ -82,7 +82,7 @@ void	take_right_fork(t_philo *philo)
 void	take_left_fork(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
-	if (philo->shared_info->no_philo_died != true)
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return ;
 	pthread_mutex_lock(&philo->shared_info->printf_mutex);
 	printf("%lld %d has taken fork %d\t🍴\n",
@@ -94,8 +94,8 @@ void	take_left_fork(t_philo *philo)
 
 void	philo_eats(t_philo *philo)
 {
-	if (philo->shared_info->no_philo_died != true)
-		return ;
+	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
+		return (put_down_forks(philo));
 	safe_last_eat(philo, UPDATE);
 	safe_is_not_eating(philo, TOGGLE_FALSE);
 	pthread_mutex_lock(&philo->shared_info->printf_mutex);
@@ -104,8 +104,7 @@ void	philo_eats(t_philo *philo)
 		philo->philo_idx + 1);
 	pthread_mutex_unlock(&philo->shared_info->printf_mutex);
 	usleep(philo->shared_info->time_to_eat * 1000);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	put_down_forks(philo);
 	safe_is_not_eating(philo, TOGGLE_TRUE);
 	safe_eat_count(philo, INCREMENT);
 	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
