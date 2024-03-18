@@ -6,11 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/18 13:23:57 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 21:26:00 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
