@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:34:31 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/18 13:08:43 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 14:09:23 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ static void	join_threads(t_info *info, t_philo *philos)
 	i = 0;
 	while (i < info->philo_count)
 	{
+		// TEST
+		/* pthread_mutex_lock(&info->printf_mutex);
+		printf("\nTRYING TO JOIN: %ld\n\n", philos[i].thread);
+		pthread_mutex_unlock(&info->printf_mutex); */
+		// TEST
 		pthread_join(philos[i].thread, NULL);
 		i++;
 	}
