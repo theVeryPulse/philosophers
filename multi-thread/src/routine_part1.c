@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/18 14:09:26 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 19:05:35 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,6 @@ void	*routine(void *args)
 	t_philo	*this;
 
 	this = (t_philo *)args;
-
-	// TEST
-	/* pthread_mutex_lock(&this->shared_info->printf_mutex);
-	printf("\nTHIS: %ld\n\n", pthread_self());
-	pthread_mutex_unlock(&this->shared_info->printf_mutex); */
-	// TEST
-
 	while (safe_no_philo_died(this->shared_info, LOOKUP))
 	{
 		philo_takes_forks(this);
@@ -55,7 +48,7 @@ void	*routine(void *args)
 		philo_thinks(this);
 	}
 	if (safe_no_philo_died(this->shared_info, LOOKUP)
-		&& this->is_dead == false)
+		&& safe_is_dead(this, LOOKUP) == false)
 	{
 		safe_full_philo_count(this->shared_info, INCREMENT);
 	}

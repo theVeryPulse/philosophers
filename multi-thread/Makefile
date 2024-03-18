@@ -6,10 +6,10 @@ FILES := main.c\
 	ft_atoi.c \
 	ft_isdigit.c \
 	input.c \
-	philos.c \
+	philo_manage.c \
 	routine_part1.c \
 	routine_part2.c \
-	safe_operations.c \
+	safe_operations_part1.c \
 	safe_operations_part2.c \
 	time.c
 INC_DIR := inc

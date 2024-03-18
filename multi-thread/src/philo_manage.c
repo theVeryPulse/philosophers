@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philos.c                                           :+:      :+:    :+:   */
+/*   philo_manage.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 23:00:13 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/18 14:02:05 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 19:06:10 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	philo_init(t_philo *philo, t_info *info, int idx)
 	philo->is_not_eating = true;
 	pthread_mutex_init(&philo->is_not_eating_mutex, NULL);
 	philo->is_dead = false;
+	pthread_mutex_init(&philo->is_dead_mutex, NULL);
 	philo->idx_is_even_number = (bool)(idx % 2 == 0);
 }
 
@@ -84,7 +85,7 @@ void	monitor_philos(t_info *info, t_philo *philos)
 static void	philo_death_notif(t_info *info, t_philo *philos, int philo_idx)
 {
 	safe_no_philo_died(info, TOGGLE_FALSE);
-	philos[philo_idx].is_dead = true;
+	safe_is_dead(&philos[philo_idx], TOGGLE_TRUE);
 	pthread_mutex_lock(&info->printf_mutex);
 	printf("%lld %d died after starving for %lld\t😵\n",
 		time_since_start(info),
