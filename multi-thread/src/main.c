@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 23:34:31 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 17:34:26 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 13:08:43 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void	one_philo_situation(t_info *info);
 static void	join_threads(t_info *info, t_philo *philos);
-static void	free_and_exit(t_info *info, t_philo *philos);
+static void	free_resources(t_info *info, t_philo *philos);
 
 /**
  * @brief 
@@ -40,15 +40,15 @@ int	main(int argc, char const **argv)
 	if (info.philo_count == 1)
 	{
 		one_philo_situation(&info);
-		return (0);
 	}
-	create_forks(&info);
-	philos = NULL;
-	pthread_mutex_init(&info.printf_mutex, NULL);
-	create_philos(&info, &philos);
-	monitor_philos(&info, philos);
-	join_threads(&info, philos);
-	free_and_exit(&info, philos);
+	else
+	{
+		create_forks(&info);
+		create_philos(&info, &philos);
+		monitor_philos(&info, philos);
+		join_threads(&info, philos);
+		free_resources(&info, philos);
+	}
 	return (0);
 }
 
@@ -72,9 +72,8 @@ static void	join_threads(t_info *info, t_philo *philos)
 	}
 }
 
-static void	free_and_exit(t_info *info, t_philo *philos)
+static void	free_resources(t_info *info, t_philo *philos)
 {
 	free(philos);
 	free(info->forks);
-	exit (0);
 }

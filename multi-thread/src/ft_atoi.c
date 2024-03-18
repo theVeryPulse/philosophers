@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:42:04 by juli              #+#    #+#             */
-/*   Updated: 2024/03/17 17:34:16 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 13:13:20 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,13 @@ int	ft_atoi(const char *nptr)
 static int	num(char c)
 {
 	if (ft_isdigit(c))
+	{
 		return (c - '0');
+	}
 	else
+	{
 		return (c);
+	}
 }
 
 /**
