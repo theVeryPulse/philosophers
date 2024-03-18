@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 23:00:13 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 17:34:28 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 14:02:05 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@ void	philo_init(t_philo *philo, t_info *info, int idx)
 
 void	create_philos(t_info *info, t_philo **philos)
 {
-	int		i;
+	int	i;
 
 	info->full_philo_count = 0;
 	pthread_mutex_init(&info->full_philo_count_mutex, NULL);
-	*philos = (t_philo *)malloc(sizeof(t_philo) * info->philo_count);
 	info->no_philo_died = true;
 	pthread_mutex_init(&info->no_philo_died_mutex, NULL);
+	pthread_mutex_init(&info->printf_mutex, NULL);
 	info->start_time = time_since_epoch();
+	*philos = (t_philo *)malloc(sizeof(t_philo) * info->philo_count);
 	i = 0;
 	while (i < info->philo_count)
 	{

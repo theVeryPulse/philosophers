@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:06:38 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/17 23:49:56 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/18 13:06:45 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ bool	philo_eats_enough(t_philo *philo)
 	if (safe_no_philo_died(philo->shared_info, LOOKUP) != true)
 		return (false);
 	if (philo->shared_info->eat_max_count > 0
-		&& philo->eat_count == philo->shared_info->eat_max_count
-		&& philo->shared_info->no_philo_died)
+		&& safe_eat_count(philo, LOOKUP) == philo->shared_info->eat_max_count
+		&& safe_no_philo_died(philo->shared_info, LOOKUP))
 	{
 		pthread_mutex_lock(&philo->shared_info->printf_mutex);
 		printf("%lld %d stops\n",

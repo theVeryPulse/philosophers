@@ -10,6 +10,7 @@ FILES := main.c\
 	routine_part1.c \
 	routine_part2.c \
 	safe_operations.c \
+	safe_operations_part2.c \
 	time.c
 INC_DIR := inc
 SRC_DIR := src
