@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/21 17:07:38 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/21 17:49:04 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	parse_input(t_info *info, int argc, char const **argv)
 	{
 		info->eat_max_count = ft_atoi(argv[5]);
 	}
-	if (info->philo_count == 0 || info->time_to_die == 0
-		|| info->time_to_eat == 0 || info->time_to_sleep == 0
-		|| info->eat_max_count == 0)
+	if (info->philo_count <= 0 || info->time_to_die <= 0
+		|| info->time_to_eat <= 0 || info->time_to_sleep <= 0
+		|| info->eat_max_count <= 0)
 	{
 		write(STDERR_FILENO, "ERROR: Input must be 5 or 6 positive integers.\n",
 			47);
