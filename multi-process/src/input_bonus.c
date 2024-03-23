@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/21 17:48:47 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/23 01:36:22 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	check_input(int argc, char const **argv)
 {
 	if ((argc != 5 && argc != 6) || non_digit_in(argv))
 	{
-		write(STDERR_FILENO, "ERROR: Input must be 5 or 6 positive integers.\n",
+		write(STDERR_FILENO, "ERROR: Input must be 4 or 5 positive integers.\n",
 			47);
+		printf("Checked\n");
 		exit (1);
 	}
 }
@@ -63,11 +64,11 @@ void	parse_input(t_info *info, int argc, char const **argv)
 	}
 	if (info->philo_count <= 0 || info->time_to_die <= 0
 		|| info->time_to_eat <= 0 || info->time_to_sleep <= 0
-		|| info->eat_max_count <= 0)
+		|| info->eat_max_count == 0)
 	{
-		write(STDERR_FILENO, "ERROR: Input must be 5 or 6 positive integers.\n",
+		write(STDERR_FILENO, "ERROR: Input must be 4 or 5 positive integers.\n",
 			47);
-		exit (1);
+		exit (2);
 	}
 	info->philo_count_is_odd = true;
 	if (info->philo_count % 2 == 0)
