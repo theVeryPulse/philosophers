@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:44:32 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/23 01:36:22 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:53:43 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	check_input(int argc, char const **argv)
 	{
 		write(STDERR_FILENO, "ERROR: Input must be 4 or 5 positive integers.\n",
 			47);
-		printf("Checked\n");
 		exit (1);
 	}
 }
