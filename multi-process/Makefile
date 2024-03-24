@@ -1,7 +1,12 @@
 NAME := philo_bonus
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -pthread -g
+CFLAGS := -Wall -Wextra -Werror -pthread -O3
 FILES := main_bonus.c \
+	ft_atoi.c \
+	ft_isdigit.c \
+	input_bonus.c \
+	time_bonus.c
+
 
 INC_DIR := inc
 SRC_DIR := src
