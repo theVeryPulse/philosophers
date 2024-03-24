@@ -5,8 +5,12 @@ FILES := main_bonus.c \
 	ft_atoi.c \
 	ft_isdigit.c \
 	input_bonus.c \
-	time_bonus.c
-
+	philo_actions.c \
+	philo_process.c \
+	safe_operations.c \
+	time_bonus.c \
+	utils.c \
+	wait_philo_death.c
 
 INC_DIR := inc
 SRC_DIR := src

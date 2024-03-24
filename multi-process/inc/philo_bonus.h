@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 22:08:41 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/24 21:39:03 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/24 22:49:57 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,39 @@ typedef enum e_mode
 	INCREMENT,
 	LOOKUP,
 	UPDATE,
-	// TOGGLE_TRUE,
-	// TOGGLE_FALSE,
 }	t_mode;
 
+/* Input */
 
-void	check_input(int argc, char const **argv);
-void	parse_input(t_info *info, int argc, char const **argv);
+int			ft_atoi(const char *nptr);
+int			ft_isdigit(int c);
+void		check_input(int argc, char const **argv);
+void		parse_input(t_info *info, int argc, char const **argv);
 
-int		ft_isdigit(int c);
-int		ft_atoi(const char *nptr);
+/* Race-condition-safe operations */
+
+long long	safe_last_eat(t_info *info, t_mode mode);
+int			safe_eat_count(t_info *info, t_mode mode);
+
+/* Philosopher routine */
+
+void		philo_routine(t_info *info);
+void		philo_takes_two_forks(t_info *info);
+void		philo_eats(t_info *info);
+void		philo_puts_down_forks(t_info *info);
+void		philo_thinks(t_info *info);
+void		philo_sleeps(t_info *info);
+
+/* Track philosopher death */
+
+void		*wait_philo_death(void *args);
+
+/* Utilities */
+
+void		unlink_all_sem(void);
+void		close_all_sem(t_info *info);
+
+/* Time */
 
 long long	time_since_epoch(void);
 long long	time_since_start(t_info *info);
-
-
-void	close_all_sem(t_info *info);
