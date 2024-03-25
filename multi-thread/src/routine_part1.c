@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 02:03:03 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/18 19:05:35 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/25 18:13:24 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,7 @@ void	philo_takes_forks(t_philo *philo)
 	}
 	else
 	{
-		if (philo->shared_info->philo_count_is_odd)
-		{
-			usleep(1);
-		}
+		usleep(1);
 		take_left_fork(philo);
 		take_right_fork(philo);
 	}
