@@ -1,6 +1,6 @@
 NAME := philo
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -pthread -g
+CFLAGS := -Wall -Wextra -Werror -pthread
 FILES := main.c\
 	forks.c \
 	ft_atoi.c \
