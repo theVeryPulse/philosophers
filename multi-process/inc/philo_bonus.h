@@ -6,10 +6,11 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 22:08:41 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/24 22:49:57 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/25 01:35:15 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <semaphore.h>
 
