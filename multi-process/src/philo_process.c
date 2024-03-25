@@ -6,7 +6,7 @@
 /*   By: Philip <juli@student.42london.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 22:20:17 by Philip            #+#    #+#             */
-/*   Updated: 2024/03/24 22:48:02 by Philip           ###   ########.fr       */
+/*   Updated: 2024/03/25 01:56:52 by Philip           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ static void	*monitor_this_philo(void *args);
 
 void	philo_routine(t_info *info)
 {
-	int			forks_num;
 	pthread_t	death_monitor;
 
-	sem_getvalue(info->forks, &forks_num);
 	pthread_create(&death_monitor, NULL, monitor_this_philo, info);
 	if (info->philo_no % 2 == 0)
 		usleep(1e3);
